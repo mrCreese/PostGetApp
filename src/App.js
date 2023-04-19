@@ -1,23 +1,56 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import Row from './components/Row';
+import Form from './components/Form';
 
 function App() {
+  const [dataBase, setDataBase]= useState([])
+  const [tableHeader, setTableHeader] = useState([])
+ 
+
+
+const date = async () => {
+  try {
+      const response = await fetch('http://localhost:4050/');
+      if(response.ok) {
+        const data = await response.json()
+        const firstObject = data[0] || {}
+        const cols = []
+        for (let key in firstObject) {
+          cols.push(key)
+        }
+        setTableHeader(cols)
+        setDataBase(data)
+      }
+  } catch (error) {
+    console.log(error)
+  }
+} 
+
+
+
+useEffect (()=>{
+ date()
+},[dataBase])
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <table>
+        <thead>
+          <tr>
+            {tableHeader.map((head, index) => {
+             return <th key={index}>{head}</th>
+            })}
+          </tr>
+        </thead>
+        <tbody>
+            {dataBase.map((row,index)=> {
+              return <Row key={index} row={row}/>
+            })}
+        </tbody>
+      </table>
+      <Form />
     </div>
   );
 }
