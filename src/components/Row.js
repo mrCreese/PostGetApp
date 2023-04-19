@@ -1,15 +1,13 @@
-import React from 'react'
+import React from "react";
 
-const Row = ({row}) => {
-    
+const Row = ({ row }) => {
   return (
     <tr>
-          {Object.entries(row).map((value, index)=> {
-            return <td key={index}>{value[1]}</td>
-          })}
+      {Object.entries(row).map((value, index) => {
+        return <td key={index}>{value[1]}</td>;
+      })}
     </tr>
+  );
+};
 
-  )
-}
-
-export default Row
+export default Row;
